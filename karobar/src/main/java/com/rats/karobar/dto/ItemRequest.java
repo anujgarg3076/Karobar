@@ -7,8 +7,10 @@ import javax.persistence.Enumerated;
 
 import com.rats.karobar.entity.ITEMUNITS;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -16,10 +18,12 @@ import lombok.ToString;
 @Setter
 @Builder
 @ToString
+@AllArgsConstructor
+@NoArgsConstructor
 public class ItemRequest {
 
 	private Long id;
-	
+
 	private String name;
 
 	private String code;

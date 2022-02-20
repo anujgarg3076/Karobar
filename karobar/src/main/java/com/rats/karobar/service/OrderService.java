@@ -2,7 +2,11 @@ package com.rats.karobar.service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -79,9 +83,20 @@ public class OrderService {
 		return totalAmount;
 	}
 
+	private Map<Long, OrderDetailRequest> toHashMap(List<OrderDetailRequest> list) {
+		if (list == null) {
+			return new HashMap<Long, OrderDetailRequest>();
+		}
+		Map<Long, OrderDetailRequest> map = list.stream()
+				.collect(Collectors.toMap(OrderDetailRequest::getItemId, Function.identity()));
+		return map;
+	}
+
 	private void addOrderDetails(OrderRequest request, OrderEntity orderEntity) {
+		Map<Long, OrderDetailRequest> addedSons = toHashMap(request.getDetails());
 		if (orderEntity.getDetails() != null) {
-			orderEntity.getDetails().clear();
+			orderEntity.getDetails()
+					.removeIf(existingDetails -> !addedSons.containsKey(existingDetails.getItem().getId()));
 		}
 
 		if (request.getDetails() != null) {

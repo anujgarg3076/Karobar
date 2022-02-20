@@ -1,11 +1,11 @@
 package com.rats.karobar.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import com.cosium.spring.data.jpa.entity.graph.repository.EntityGraphJpaRepository;
 import com.rats.karobar.entity.ItemEntity;
 
 @Repository
-public interface ItemRepository extends JpaRepository<ItemEntity, Long> {
+public interface ItemRepository extends EntityGraphJpaRepository<ItemEntity, Long> {
 
 }

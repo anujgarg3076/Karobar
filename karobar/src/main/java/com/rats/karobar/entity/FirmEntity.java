@@ -11,6 +11,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
@@ -19,6 +20,7 @@ import lombok.Setter;
 @Table(name = "firm")
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class FirmEntity extends BaseEntity {
 
 	private String name;

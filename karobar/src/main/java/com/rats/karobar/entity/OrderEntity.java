@@ -2,23 +2,27 @@ package com.rats.karobar.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
+
+import org.springframework.beans.BeanUtils;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
@@ -27,6 +31,7 @@ import lombok.Setter;
 @Table(name = "order_tbl")
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class OrderEntity extends BaseEntity {
 
 	private String billingName;
@@ -49,13 +54,19 @@ public class OrderEntity extends BaseEntity {
 	@Version
 	private Long version;
 
-	@OneToMany(mappedBy = "order", orphanRemoval = true, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "order", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@Builder.Default
-	private List<OrderDetailsEntity> details = new ArrayList<>();
+	private Set<OrderDetailsEntity> details = new HashSet<>();
 
 	public void addOrderDetail(OrderDetailsEntity detail) {
 		if (this.details == null) {
-			this.details = new ArrayList<>();
+			this.details = new HashSet<>();
+		}
+		for (OrderDetailsEntity obj : this.details) {
+			if (detail.equals(obj)) {
+				BeanUtils.copyProperties(detail, obj, "id", "order");
+				break;
+			}
 		}
 		this.details.add(detail);
 		detail.setOrder(this);
