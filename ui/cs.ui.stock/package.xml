@@ -1,0 +1,15 @@
+<Package name="cs.ui.stock" version="">
+    <File name="ui/stock.install.properties" preprocess="true" overwrite="false" />
+    <WebApp name="stock"/>
+
+    <Tarball name="tests.tar" deployment="test"/>
+    
+    <OracleObject name="database" config="cs.bc.lcm/database">
+        <Part name="scripts/ref_data.sql"/>
+        <Part name="scripts/gen_stock_view.py" args="%(cs.bc.lcm/database[dblogin()])s"/>
+    </OracleObject>
+
+    <Script name="css_opaa_access_3" timing="on" event="install,upgrade" >
+		pytool $CSHOME/bin/opaa_access_loader_3.py "$BASEDIR/cfg/cs_ui_stock_access.xml" %(cs.bc.opaa/database[dblogin()])s
+	</Script>
+</Package>

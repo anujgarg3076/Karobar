@@ -1,0 +1,28 @@
+    <persistence-unit name="stock">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+		<!-- ####################################################################################### -->
+		<!-- Adding level1-mdaccounting entities -->
+		<jar-file>../lib/mda-entities-@MDA_VER@.jar</jar-file>
+        <!-- Adding ACQ_OperationalWeb entities -->
+        <class>com.tieto.cs.stock.model.Terminal</class>
+		<!-- excluding unlisted entities as level1-mdaccounting contains already defined entities within app -->
+		<exclude-unlisted-classes>true</exclude-unlisted-classes>
+		<!-- ####################################################################################### -->
+
+        <shared-cache-mode>NONE</shared-cache-mode>
+
+        <properties>
+            <property name="javax.persistence.jdbc.driver" value="oracle.jdbc.driver.OracleDriver"/>
+            <property name="javax.persistence.jdbc.url" value="@JDBC_URL@"/>
+            <property name="javax.persistence.jdbc.user" value="@JDBC_USER@"/>
+            <property name="javax.persistence.jdbc.password" value=""/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.Oracle12cDialect"/>
+            <property name="hibernate.show_sql" value="false"/>
+            <property name="hibernate.hql.bulk_id_strategy" value="org.hibernate.hql.spi.id.inline.InlineIdsInClauseBulkIdStrategy" />
+            <property name="hibernate.c3p0.min_size" value="5"/>
+            <property name="hibernate.c3p0.max_size" value="10"/>
+            <property name="hibernate.c3p0.timeout" value="300"/>
+            <property name="hibernate.c3p0.contextClassLoaderSource" value="library"/>
+        </properties>
+    </persistence-unit>

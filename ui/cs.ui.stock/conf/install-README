@@ -1,0 +1,8 @@
+How to install this component:
+
+* Open install.properties and set requested parameters.
+* Make sure you have set correct JAVA_HOME and CATALINA_HOME environment variables.
+* From installation folder, run "ant install"
+
+Component files will be copied to specified location and if necessarry, you
+can safely remove this installation.

@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<APPLICATION id="CS.STOCK" name="STOCK Management" desc="STOCK Management WEB application" owner="cs.bc.lcm/database" >
+	<OBJECT id="CS.STOCK" name="STOCK Management" desc="STOCK Management" >
+		<OPERATION id="SELF" name="Run" desc="Allow STOCK Management"/>
+		<!-- Let's see what future brings here -->
+	</OBJECT>
+</APPLICATION>

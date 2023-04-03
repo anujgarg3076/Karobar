@@ -1,0 +1,7 @@
+/node_modules
+/prod
+/dist
+/.parcel-cache
+/.vscode
+cypress/videos
+cypress/screenshots

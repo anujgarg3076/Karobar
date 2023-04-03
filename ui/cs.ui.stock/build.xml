@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir="." default="info" name="CS STOCK">
+  <target name="info" description="Prints available ant targets">
+    <echo message=" ant install - install by symlinking"/>
+    <echo message=" ant compile - compile java class files"/>
+    <echo message=" ant reload  - reloads webapp in tomcat"/>
+    <echo message=" ant info    - display this message"/>
+  </target>
+
+  <property name="component.name" value="stock" />
+
+  <property name="noeditwarning" value="WARNING! This file is generated. Don't edit it or your changes will be lost!" />
+
+  <target name="init">
+    <loadproperties srcFile="install.properties" />
+    <property environment="env"/>
+    <property name="core.path" value="${env.CORE_PATH}"/>
+
+    <fail message="JAVA_HOME must be set" >
+      <condition>
+        <length string="${env.JAVA_HOME}" property="length.java_home" length="0"/>
+      </condition>
+    </fail>
+
+    <echo message="ant.java.version=${ant.java.version}"/>
+    <echo message="JAVA_HOME=${env.JAVA_HOME}"/>
+    <echo message="WEBAPP_HOME=${env.CORE_PATH}"/>
+  </target>
+
+  <target name="read-entity-versions">
+    <xmlproperty file="pom.xml" prefix="pom" />
+    <echo>The LCM entities version is ${pom.project.properties.tieto.mda-entities.version}</echo>
+    <echo>The STOCK entities version is ${pom.project.properties.tieto.stock-entities.version}</echo>
+    <copy file="conf/persistence.xml.fragments/stock.persistence.xml.template.build" toFile="conf/persistence.xml.fragments/stock.persistence.xml.template" overwrite="true">
+			<filterset>
+				<filter token="MDA_VER" value="${pom.project.properties.tieto.mda-entities.version}"/>
+			</filterset>
+		</copy>
+  </target>
+
+  <target name="compile"
+    depends="compile-manifest, read-entity-versions">
+    <property environment="env"/>
+    <javac
+      debug="true"
+      deprecation="true"
+      destdir="webapp/WEB-INF/classes"
+      srcdir="webapp/WEB-INF/classes"
+      includeantruntime="false">
+      <classpath>
+        <fileset dir="webapp/WEB-INF/lib">
+          <include name="**/*.jar"/>
+        </fileset>
+        <fileset dir="${env.TOMCAT_CLASSPATH}">
+          <include name="**/*.jar"/>
+        </fileset>
+        <fileset dir="${env.CORE_PATH}/webapp/WEB-INF/lib">
+          <include name="**/*.jar"/>
+        </fileset>
+      </classpath>
+    </javac>
+  </target>
+
+  <target name="clean" description="Delete compiled .class files">
+    <delete>
+      <fileset dir="webapp/WEB-INF/classes" includes="**/*.class"/>
+      <fileset dir="webapp/WEB-INF/lib" includes="*.jar"/>
+      <fileset dir="webapp/apps/${component.name}">
+        <include name="fonts/**" />
+        <include name="bundle.js" />
+        <include name="main.css" />
+      </fileset>
+    </delete>
+  </target>
+
+  <target name="compile-manifest">
+    <property environment="env"/>
+    <copy file="conf/manifest.rdf.template"
+      overwrite="true"
+      tofile="webapp/apps/${component.name}/manifest.rdf">
+      <filterset>
+        <filter token="VERSION" value="${env.IF_VER}"/>
+        <filter token="NOEDITWARNING" value="${noeditwarning}"/>
+        <filter token="HIDDEN" value="true"/>
+      </filterset>
+    </copy>
+  </target>
+
+  <target name="install-symlink"
+    depends="init, compile-manifest"
+    description="install component by symlinking into webapp" >
+    <copy todir="${core.path}" overwrite="true">
+      <fileset dir="." includes="**/${component.name}.links"/>
+      <filterset>
+        <filter token="ROOT_DIR" value="${basedir}"/>
+        <filter token="BUILD" value="svn"/>
+      </filterset>
+    </copy>
+    <symlink action="recreate">
+       <fileset dir="${core.path}" includes="**/${component.name}.links"/>
+    </symlink>
+    <delete quiet="true">
+      <fileset dir="${core.path}" includes="**/${component.name}.links"/>
+    </delete>
+  </target>
+
+  <target name="reload" depends="init">
+    <ant dir="${core.path}" target="reload"/>
+  </target>
+
+  <target name="uninstall" depends="init">
+    <delete includeEmptyDirs="true">
+      <fileset dir="${core.path}/webapp/apps" includes="${component.name}*/" />
+    </delete>
+  </target>
+
+  <target name="uninstall-symlink" depends="init">
+    <exec executable="sh">
+      <arg line="-c 'rm ${core.path}/webapp/apps/${component.name}*'" />
+    </exec>
+  </target>
+
+  <target name="install" depends="uninstall-symlink,compile,install-symlink,reload">
+  </target>
+
+  <target name="distdir" depends="compile">
+    <delete dir="dist" />
+    <mkdir dir="${env.DISTDIR}" />
+    <copy todir="${env.DISTDIR}">
+      <fileset dir=".">
+        <exclude name="dist/" />
+        <exclude name="README" />
+        <exclude name="stock/" />
+        <exclude name="build.xml"/>
+        <exclude name="install.properties" />
+        <exclude name="**/*.java" />
+        <exclude name="conf/install-README" />
+        <exclude name="conf/install.build.xml" />
+        <exclude name="conf/manifest.rdf.template" />
+        <exclude name="webapp/apps/stock/**" />
+        <exclude name="webapp/WEB-INF/lib/mapstruct-processor-*.jar" />
+      </fileset>
+      <fileset dir=".">
+        <include name="webapp/apps/stock/index.jsp" />
+        <include name="webapp/apps/stock/bundle.js" />
+        <include name="webapp/apps/stock/main.css" />
+        <include name="webapp/apps/stock/fonts/**" />
+        <include name="webapp/apps/stock/manifest.rdf"/>
+      </fileset>
+    </copy>
+    <copy file="conf/install-README" tofile="${env.DISTDIR}/README" />
+    <copy file="conf/install.build.xml" tofile="${env.DISTDIR}/build.xml">
+      <filterset>
+        <filter token="VERSION" value="${env.DIST_VER}"/>
+      </filterset>
+    </copy>
+  </target>
+
+</project>

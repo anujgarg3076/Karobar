@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!-- @NOEDITWARNING@ -->
+<RDF:RDF xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:APPLICATIONS="https://www.tietoevry.com#">
+  <RDF:Description RDF:about="https://www.tietoevry.com">
+    <APPLICATIONS:code>stock</APPLICATIONS:code>
+    <APPLICATIONS:OPAA_ID>CS.STOCK</APPLICATIONS:OPAA_ID>
+    <APPLICATIONS:name>Terminal Stock</APPLICATIONS:name>
+    <APPLICATIONS:description>CardSuite React.js front-end for STOCK REST API</APPLICATIONS:description>
+    <APPLICATIONS:launcher>index.jsp</APPLICATIONS:launcher>
+    <APPLICATIONS:version>@VERSION@</APPLICATIONS:version>
+    <APPLICATIONS:type>HTML</APPLICATIONS:type>
+  </RDF:Description>
+  <RDF:Seq RDF:about="https://www.tietoevry.com">
+    <RDF:li RDF:resource="https://www.tietoevry.com"/>
+  </RDF:Seq>
+</RDF:RDF>

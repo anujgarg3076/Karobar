@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`is rendered correctly 1`] = `
+[
+  <h6
+    className="MuiTypography-root MuiTypography-h6 css-170lecc-MuiTypography-root"
+  >
+    POS
+  </h6>,
+  <div>
+    <span
+      className="MuiTypography-root MuiTypography-caption css-w5jfwh-MuiTypography-root"
+    >
+      Installed
+    </span>
+    <span
+      className="MuiTypography-root MuiTypography-caption css-w5jfwh-MuiTypography-root"
+    >
+      : 
+    </span>
+    <span
+      className="MuiTypography-root MuiTypography-caption css-w5jfwh-MuiTypography-root"
+    >
+      8
+    </span>
+  </div>,
+  <div>
+    <span
+      className="MuiTypography-root MuiTypography-caption css-w5jfwh-MuiTypography-root"
+    >
+      Replaced
+    </span>
+    <span
+      className="MuiTypography-root MuiTypography-caption css-w5jfwh-MuiTypography-root"
+    >
+      : 
+    </span>
+    <span
+      className="MuiTypography-root MuiTypography-caption css-w5jfwh-MuiTypography-root"
+    >
+      3
+    </span>
+  </div>,
+]
+`;
